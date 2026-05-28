@@ -18,7 +18,8 @@ async function startPopup() {
   const content = websiteInfoRender(domainInfo, userId, 'popup');
 
   const popupElement = document.getElementById('popup');
-  popupElement.innerHTML = content;
+  const parsed = new DOMParser().parseFromString(content, 'text/html').body;
+  popupElement.replaceChildren(...Array.from(parsed.childNodes));
   popupElement.querySelectorAll('.ssph-options').forEach(el => {
     el.addEventListener('click', event => {
       event.preventDefault();

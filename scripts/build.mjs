@@ -31,6 +31,8 @@ const slug = 'securityshrimp-anti-phishing-extension';
 const version = manifest.version;
 
 // Files copied into each browser staging dir. Anything not listed is left out.
+// Files copied into each browser staging dir. Anything not listed is left
+// out — this also excludes tests/, scripts/, node_modules/, .git/, etc.
 const sourceEntries = [
   'manifest.json',
   'functions.js',
@@ -40,6 +42,7 @@ const sourceEntries = [
   'README.md',
   'background',
   'content_scripts',
+  'data',
   'images',
   'libraries',
   'options',
@@ -47,7 +50,7 @@ const sourceEntries = [
 ];
 
 const firefoxBackgroundScripts = [
-  'libraries/browser-polyfill.min.js',
+  'libraries/browser-shim.js',
   'libraries/psl.min.js',
   'libraries/punycode.min.js',
   'functions.js',

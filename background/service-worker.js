@@ -9,7 +9,7 @@
 // startup, or the browser will not wake the worker for those events.
 
 importScripts(
-  '../libraries/browser-polyfill.min.js',
+  '../libraries/browser-shim.js',
   '../libraries/psl.min.js',
   '../libraries/punycode.min.js',
   '../functions.js',

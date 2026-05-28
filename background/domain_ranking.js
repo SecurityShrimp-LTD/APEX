@@ -113,7 +113,12 @@ class DomainRankingManager {
       if (dataAge !== null && dataAge >= 0 && dataAge < this.config.updateInterval) {
         this.domainRanking = new DomainRanking(data.topDomains);
       } else {
-        this.domainRanking = new DomainRanking([]);
+        // No fresh cache. Use the bundled snapshot so the extension is
+        // useful immediately — including on Firefox where the live-fetch
+        // host permission may not be granted yet — and trigger a refresh
+        // in the background so the cache gets up-to-date data on top.
+        const bundled = await this._loadBundledSnapshot();
+        this.domainRanking = new DomainRanking(bundled);
         needsImmediateUpdate = true;
       }
     } catch (e) {
@@ -138,6 +143,21 @@ class DomainRankingManager {
         when: Date.now() + remainingMs,
         periodInMinutes
       });
+    }
+  }
+
+  async _loadBundledSnapshot() {
+    try {
+      const url = browser.runtime.getURL('data/top-domains.txt');
+      const res = await fetch(url);
+      if (!res.ok) {
+        return [];
+      }
+      const text = await res.text();
+      return text.split('\n').map(s => s.trim()).filter(Boolean);
+    } catch (e) {
+      console.error('failed to load bundled top-domains snapshot', e);
+      return [];
     }
   }
 

@@ -26,14 +26,19 @@ Requires Node.js 20+.
 ```sh
 npm install         # install build/lint deps
 npm run vendor      # refresh libraries/ from node_modules
+npm run snapshot    # refresh data/top-domains.txt from Majestic (network)
 npm run lint        # eslint over source
 npm run lint:fix    # autofix what eslint can
 npm run lint:webext # AMO linter against dist/firefox (requires `npm run build` first)
+npm run test        # vitest run
+npm run test:watch  # vitest watch mode
 npm run format      # prettier
 npm run build       # vendor + emit dist/chrome/, dist/firefox/, and per-browser zips
 ```
 
 Third-party library versions are tracked in `package.json`. To bump one, update the version there, run `npm install`, then `npm run vendor` to refresh the files in `libraries/`.
+
+The bundled `data/top-domains.txt` snapshot is committed so first-install works without any host-permission prompt (Firefox MV3 makes the live Majestic fetch optional). Re-run `npm run snapshot` occasionally to refresh; the extension also pulls a fresh list from Majestic weekly at runtime once the host permission is granted.
 
 ## License
 

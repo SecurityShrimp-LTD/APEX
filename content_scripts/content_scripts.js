@@ -119,6 +119,11 @@ function setPhishingTooltip(target, content) {
 
 function setMisleadingLinksTooltip() {
   const handledElements = new WeakSet();
+  // Cache by (href, text) tuple so SPA DOM rebuilds and re-hovered anchors
+  // don't message the service worker repeatedly. Capped to avoid unbounded
+  // growth in long-lived tabs.
+  const resultCache = new Map();
+  const RESULT_CACHE_MAX = 1000;
 
   document.body.addEventListener('mouseover', async event => {
     const target = event.target;
@@ -142,11 +147,22 @@ function setMisleadingLinksTooltip() {
       return;
     }
 
-    const misleadingLinkInfo = await browser.runtime.sendMessage({
-      type: 'misleadingLinkInfo',
-      link,
-      text
-    });
+    const cacheKey = link + '\x00' + text;
+    let misleadingLinkInfo;
+    if (resultCache.has(cacheKey)) {
+      misleadingLinkInfo = resultCache.get(cacheKey);
+    } else {
+      misleadingLinkInfo = await browser.runtime.sendMessage({
+        type: 'misleadingLinkInfo',
+        link,
+        text
+      });
+      if (resultCache.size >= RESULT_CACHE_MAX) {
+        // Evict oldest insertion. Map preserves insertion order.
+        resultCache.delete(resultCache.keys().next().value);
+      }
+      resultCache.set(cacheKey, misleadingLinkInfo);
+    }
 
     if (misleadingLinkInfo) {
       tippy(target, {

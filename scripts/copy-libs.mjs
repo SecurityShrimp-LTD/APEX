@@ -12,7 +12,6 @@ const root = resolve(here, '..');
 const libDir = resolve(root, 'libraries');
 
 const copies = [
-  ['node_modules/webextension-polyfill/dist/browser-polyfill.min.js', 'browser-polyfill.min.js'],
   ['node_modules/color-hash/dist/color-hash.js', 'color-hash.js'],
   ['node_modules/crc-32/crc32.js', 'crc32.js'],
   ['node_modules/@popperjs/core/dist/umd/popper.min.js', 'popper.min.js'],

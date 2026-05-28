@@ -274,33 +274,60 @@ function isIpAddress(domain) {
   return false;
 }
 
-async function getDomainVisitCount(domain) {
-  const visits = await browser.history.search({
-    text: domain,
-    startTime: 0,
-    maxResults: 1000
-  });
+// History queries are expensive (up to 1000 results scanned). The per-tab
+// domainInfoCache handles the rapid-fire case (Google Docs etc.), but a
+// dedicated visit-count cache keyed by domain/url helps across tabs and
+// across the longer cache miss window. 60 second TTL: visit counts only
+// matter as a coarse "new vs known" signal, so freshness within a minute
+// is plenty.
+const VISIT_COUNT_TTL_MS = 60 * 1000;
+const domainVisitCountCache = new Map();
+const urlVisitCountCache = new Map();
 
-  let visitCount = 0;
-  const urlMatchRegex = new RegExp('^https?://([0-9a-z\\-]+\\.)*' + escapeRegExp(domain) + '(/|$)', 'i');
-  for (const visit of visits) {
-    if (visit.url && visit.visitCount && visit.url.match(urlMatchRegex)) {
-      visitCount += visit.visitCount;
-    }
+function cachedVisitCount(cache, key, compute) {
+  const now = Date.now();
+  const entry = cache.get(key);
+  if (entry && now - entry.ts < VISIT_COUNT_TTL_MS) {
+    return entry.value;
   }
+  const promise = compute();
+  cache.set(key, { ts: now, value: promise });
+  // Best-effort eviction: drop entries that fall out of TTL when accessed.
+  // No timer needed — at the rates this fires, lazy eviction is plenty.
+  return promise;
+}
 
-  return visitCount;
+async function getDomainVisitCount(domain) {
+  return cachedVisitCount(domainVisitCountCache, domain, async () => {
+    const visits = await browser.history.search({
+      text: domain,
+      startTime: 0,
+      maxResults: 1000
+    });
+
+    let visitCount = 0;
+    const urlMatchRegex = new RegExp('^https?://([0-9a-z\\-]+\\.)*' + escapeRegExp(domain) + '(/|$)', 'i');
+    for (const visit of visits) {
+      if (visit.url && visit.visitCount && visit.url.match(urlMatchRegex)) {
+        visitCount += visit.visitCount;
+      }
+    }
+
+    return visitCount;
+  });
 }
 
 async function getUrlVisitCount(url) {
-  const visits = await browser.history.getVisits({ url });
+  return cachedVisitCount(urlVisitCountCache, url, async () => {
+    const visits = await browser.history.getVisits({ url });
 
-  let visitCount = 0;
-  for (const visit of visits) {
-    if (visit.transition !== 'reload') {
-      visitCount++;
+    let visitCount = 0;
+    for (const visit of visits) {
+      if (visit.transition !== 'reload') {
+        visitCount++;
+      }
     }
-  }
 
-  return visitCount;
+    return visitCount;
+  });
 }
