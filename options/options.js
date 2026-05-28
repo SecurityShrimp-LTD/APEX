@@ -1,6 +1,6 @@
 'use strict';
 
-/* global browser, escapeRegExp */
+/* global escapeRegExp */
 
 startOptions();
 

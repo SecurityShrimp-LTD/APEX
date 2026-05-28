@@ -1,6 +1,6 @@
 'use strict';
 
-/* global browser */
+/* exported getUserId, escapeRegExp */
 
 // https://stackoverflow.com/a/23854032
 async function getUserId() {
@@ -10,7 +10,7 @@ async function getUserId() {
     crypto.getRandomValues(randomPool);
     let hex = '';
     for (let i = 0; i < randomPool.length; ++i) {
-      hex += randomPool[i].toString(16);
+      hex += randomPool[i].toString(16).padStart(2, '0');
     }
     // E.g. db18458e2782b2b77e36769c569e263a53885a9944dd0a861e5064eac16f1a
     return hex;

@@ -1,11 +1,11 @@
 'use strict';
 
-/* global browser, tippy, getUserId, websiteInfoRender, misleadingLinkInfoRender */
+/* global tippy, getUserId, websiteInfoRender, misleadingLinkInfoRender */
 
 startExtension();
 
 async function startExtension() {
-  const [userId, { optionsOrUndefined }, domainInfo] = await Promise.all([
+  const [userId, storedOptions, domainInfo] = await Promise.all([
     getUserId(),
     browser.storage.sync.get('options'),
     browser.runtime.sendMessage({ type: 'getDomainInfo' })
@@ -15,7 +15,7 @@ async function startExtension() {
     return;
   }
 
-  const options = optionsOrUndefined || {};
+  const options = storedOptions.options || {};
 
   if (options.excludedWebsitesRegex &&
     new RegExp(options.excludedWebsitesRegex, 'i').test(domainInfo.identDomain)) {
@@ -91,7 +91,7 @@ function setPhishingTooltip(target, content) {
       return instance.hide()
     },
     onShown: () => {
-      document.querySelectorAll('.zecops-anti-phishing-extension-dismiss').forEach(el => {
+      document.querySelectorAll('.ssph-dismiss').forEach(el => {
         el.addEventListener('click', event => {
           event.preventDefault();
           delegateInstance.destroy();

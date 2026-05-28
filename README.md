@@ -1,22 +1,40 @@
-# ZecOps Anti-Phishing Extension
+# SecurityShrimp Anti-Phishing Extension
 
-A web extension that augments websites with additional visual information, allowing to make an informed decision about a website's legitimacy. The user can take into account context such as the origin of the link and the sensitivity of the information about to be entered.
+A web extension that augments websites with additional visual information so the user can make an informed decision about a site's legitimacy. The extension considers the origin of the link, the sensitivity of the information about to be entered, and look-alike / Unicode domain heuristics to surface phishing risk in-context.
 
-You can get more information in our blog post, [Introducing ZecOps Anti-Phishing Extension](https://blog.zecops.com/announcements/introducing-zecops-anti-phishing-extension/).
+This project is a fork of the original [ZecOps Anti-Phishing Extension](https://github.com/ZecOps/anti-phishing-extension), released under GPLv3 and unmaintained since 2022. SecurityShrimp continues the work: Manifest V3 migration, dependency refresh, and ongoing maintenance.
 
 ## Installing the extension
 
-### Loading from a folder
+The working-tree `manifest.json` is Chrome-flavored (MV3 service worker only).
 
-Refer to your browser's guide for loading a local web extension. When prompted, select the folder of the cloned repository.
+* **Chrome / Edge / Chromium:** open `chrome://extensions/`, enable Developer mode, and load the cloned repo folder directly. The vendored `libraries/` directory is checked in, so no build step is required.
+* **Firefox:** run `npm install && npm run build` first, then in `about:debugging#/runtime/this-firefox` choose "Load Temporary Add-on" and point it at `dist/firefox/manifest.json`. The Firefox bundle uses `background.scripts` instead of `service_worker` because Firefox's service-worker background support is still pref-gated on most shipped versions.
 
-### Installing from store
+Published store listings will be linked here once available.
 
-You can get the extension in the extension store for your browser:
-* [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/zecops-anti-phishing-extension/)
-* [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/zecops-antiphishing-exte/fnopnihafmgbhlpamlohhcjeclnmhdgi) (Chromium-based version)
-* [Google Chrome and other Chromium-based browsers](https://chrome.google.com/webstore/detail/zecops-anti-phishing-exte/dhjplchhbdhcpfnoikedapfmhgenfpef) (such as Opera and Brave)
+## Browser compatibility
 
-## Other ZecOps Projects
+Manifest V3. Targets Chrome / Edge / Chromium and Firefox 121+ (Firefox needs the rewritten manifest produced by `npm run build`).
 
-We created this project as a community project. If you'd like to learn about the other initiatives we have at ZecOps, we invite you to learn more about ZecOps Mobile EDR / DFIR solutions [here](https://www.zecops.com/solutions/mobile-devices-dfir).
+On Firefox MV3, host permissions are optional at install time. Until the user grants access to `downloads.majestic.com`, the top-domains list will be empty and the look-alike / popularity checks will be skipped.
+
+## Development
+
+Requires Node.js 20+.
+
+```sh
+npm install         # install build/lint deps
+npm run vendor      # refresh libraries/ from node_modules
+npm run lint        # eslint over source
+npm run lint:fix    # autofix what eslint can
+npm run lint:webext # AMO linter against dist/firefox (requires `npm run build` first)
+npm run format      # prettier
+npm run build       # vendor + emit dist/chrome/, dist/firefox/, and per-browser zips
+```
+
+Third-party library versions are tracked in `package.json`. To bump one, update the version there, run `npm install`, then `npm run vendor` to refresh the files in `libraries/`.
+
+## License
+
+GPLv3 — see [LICENSE](LICENSE). Inherited from the original ZecOps project; this fork preserves the same license per GPL §5.

@@ -1,6 +1,6 @@
 'use strict';
 
-/* global browser */
+/* exported DomainRankingManager */
 
 class DomainRanking {
   constructor(topDomainsArray) {
@@ -71,13 +71,22 @@ class DomainRanking {
 }
 
 class DomainRankingManager {
-  constructor({ domainMaxCount, updateInterval }) {
+  constructor({ domainMaxCount, updateInterval, alarmName = 'topDomainsUpdate' }) {
     this.config = {
       domainMaxCount,
-      updateInterval
+      updateInterval,
+      alarmName
     };
 
     this.domainRanking = null;
+
+    // Register the alarm listener synchronously — MV3 service workers only
+    // wake for events whose listeners were attached at top level.
+    browser.alarms.onAlarm.addListener(alarm => {
+      if (alarm.name === this.config.alarmName) {
+        this._updateTopDomains();
+      }
+    });
 
     this.initPromise = this._init();
   }
@@ -88,7 +97,8 @@ class DomainRankingManager {
   }
 
   async _init() {
-    let nextUpdateTimeout = this.config.updateInterval;
+    let needsImmediateUpdate = false;
+    let dataAge = null;
 
     try {
       const data = await browser.storage.local.get([
@@ -96,27 +106,39 @@ class DomainRankingManager {
         'topDomains'
       ]);
 
-      let dataAge = null;
       if (data.topDomains && data.topDomainsTimestamp) {
         dataAge = Date.now() - data.topDomainsTimestamp;
       }
 
       if (dataAge !== null && dataAge >= 0 && dataAge < this.config.updateInterval) {
         this.domainRanking = new DomainRanking(data.topDomains);
-        nextUpdateTimeout -= dataAge;
       } else {
         this.domainRanking = new DomainRanking([]);
-        nextUpdateTimeout = 0;
+        needsImmediateUpdate = true;
       }
     } catch (e) {
       console.error(e);
       this.domainRanking = new DomainRanking([]);
     }
 
-    setTimeout(() => {
+    const periodInMinutes = this.config.updateInterval / 60000;
+    const existing = await browser.alarms.get(this.config.alarmName);
+
+    if (needsImmediateUpdate) {
       this._updateTopDomains();
-      setInterval(() => this._updateTopDomains(), this.config.updateInterval);
-    }, nextUpdateTimeout);
+      if (!existing) {
+        browser.alarms.create(this.config.alarmName, {
+          delayInMinutes: periodInMinutes,
+          periodInMinutes
+        });
+      }
+    } else if (!existing) {
+      const remainingMs = this.config.updateInterval - dataAge;
+      browser.alarms.create(this.config.alarmName, {
+        when: Date.now() + remainingMs,
+        periodInMinutes
+      });
+    }
   }
 
   async _updateTopDomains() {

@@ -1,57 +1,57 @@
-div.zecops-anti-phishing-extension-tooltip {
+div.ssph-tooltip {
     direction: ltr;
     text-align: center;
 }
 
-div.zecops-anti-phishing-extension-tooltip * {
+div.ssph-tooltip * {
     color: white;
 }
 
-div.zecops-anti-phishing-extension-tooltip a {
+div.ssph-tooltip a {
     color: white;
 }
 
-div.zecops-anti-phishing-extension-tooltip hr {
+div.ssph-tooltip hr {
     border: 1px solid white;
     background-color: white;
     margin-top: 8px;
     margin-bottom: 8px;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-heading {
+div.ssph-tooltip
+    .ssph-tooltip-heading {
     font-size: 1.5rem;
     font-weight: 500;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-green {
+div.ssph-tooltip
+    .ssph-tooltip-green {
     font-size: 1.2rem;
     font-weight: 500;
     line-height: 0;
     color: #4f4;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-red {
+div.ssph-tooltip
+    .ssph-tooltip-red {
     font-size: 1.2rem;
     font-weight: 500;
     line-height: 0;
     color: #f44;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-warnings > div {
+div.ssph-tooltip
+    .ssph-tooltip-warnings > div {
     margin: 8px 0;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-domain-emoji {
+div.ssph-tooltip
+    .ssph-tooltip-domain-emoji {
     font-size: 72px;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-domain {
+div.ssph-tooltip
+    .ssph-tooltip-domain {
     display: inline-block;
     word-break: break-all;
     border: 1px solid white;
@@ -59,23 +59,23 @@ div.zecops-anti-phishing-extension-tooltip
     padding: 3px 6px;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-actions {
+div.ssph-tooltip
+    .ssph-tooltip-actions {
     display: flex;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-actions > a {
+div.ssph-tooltip
+    .ssph-tooltip-actions > a {
     flex: 1;
     display: block;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-actions > a:not(:last-child) {
+div.ssph-tooltip
+    .ssph-tooltip-actions > a:not(:last-child) {
     border-right: 2px solid white;
 }
 
-div.zecops-anti-phishing-extension-tooltip
-    .zecops-anti-phishing-extension-tooltip-actions-icon {
+div.ssph-tooltip
+    .ssph-tooltip-actions-icon {
     margin-bottom: 4px;
 }

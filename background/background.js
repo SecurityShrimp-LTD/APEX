@@ -1,6 +1,6 @@
 'use strict';
 
-/* global browser, DomainRankingManager, psl, punycode, escapeRegExp */
+/* global DomainRankingManager, psl, punycode, escapeRegExp */
 
 const config = {
   maxRankWellKnownDomain: 20000,
@@ -165,14 +165,18 @@ async function updateDataForTab(tabId, url) {
 
   const warningCount = domainInfo ? Object.keys(domainInfo.warnings).length : 0;
 
-  browser.browserAction.setBadgeBackgroundColor({
-    tabId,
-    color: [217, 0, 0, 255]
-  });
-  browser.browserAction.setBadgeText({
-    tabId,
-    text: warningCount > 0 ? warningCount.toString() : ''
-  });
+  try {
+    await browser.action.setBadgeBackgroundColor({
+      tabId,
+      color: [217, 0, 0, 255]
+    });
+    await browser.action.setBadgeText({
+      tabId,
+      text: warningCount > 0 ? warningCount.toString() : ''
+    });
+  } catch (e) {
+    // Tab may have been closed between the update event and now.
+  }
 
   return domainInfo;
 }

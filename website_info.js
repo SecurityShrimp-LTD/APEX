@@ -1,6 +1,7 @@
 'use strict';
 
 /* global ColorHash, CRC32 */
+/* exported websiteInfoRender, misleadingLinkInfoRender */
 
 function websiteInfoRender(domainInfo, userId, renderTarget) {
   if (domainInfo.isUnsupportedPage) {
@@ -24,15 +25,15 @@ function websiteInfoRender(domainInfo, userId, renderTarget) {
 
   const t = escapeHtml;
 
-  const helpUrl = 'https://anti-phishing.zecops.com/';
-  const reportUrl = 'https://anti-phishing.zecops.com/report';
+  const helpUrl = 'https://github.com/f8al/anti-phishing-extension';
+  const reportUrl = 'https://github.com/f8al/anti-phishing-extension/issues/new';
 
   const content = `
     ${warningCount === 0 ? '' : `
-      <div class="zecops-anti-phishing-extension-tooltip-heading">
+      <div class="ssph-tooltip-heading">
         ⚠️ ${warningCount > 1 ? 'Warnings' : 'Warning'} ⚠️
       </div>
-      <div class="zecops-anti-phishing-extension-tooltip-warnings">
+      <div class="ssph-tooltip-warnings">
         ${!domainInfo.warnings.smallVisitCount ? '' : `
           <div>
             ${warningCount > 1 ? '• ' : ''}
@@ -56,7 +57,7 @@ function websiteInfoRender(domainInfo, userId, renderTarget) {
             ${warningCount > 1 ? '• ' : ''}
             The domain name contains Unicode characters (${t(domainInfo.warnings.unicodeDomain).replace(
               /[^\x20-\x7e]+/ug,
-              '<span class="zecops-anti-phishing-extension-tooltip-red">$&</span>'
+              '<span class="ssph-tooltip-red">$&</span>'
             )}).
             Make sure that this is the website that you intended to visit.
           </div>
@@ -65,9 +66,9 @@ function websiteInfoRender(domainInfo, userId, renderTarget) {
           <div>
             ${warningCount > 1 ? '• ' : ''}
             The domain name,
-            <span class="zecops-anti-phishing-extension-tooltip-red">${t(domainName)}</span>,
+            <span class="ssph-tooltip-red">${t(domainName)}</span>,
             is visually similar to another domain of a popular website,
-            <span class="zecops-anti-phishing-extension-tooltip-green">${t(domainInfo.warnings.similarTopDomain)}</span>.
+            <span class="ssph-tooltip-green">${t(domainInfo.warnings.similarTopDomain)}</span>.
           </div>
         `}
         ${!domainInfo.warnings.insecure ? '' : `
@@ -83,7 +84,7 @@ function websiteInfoRender(domainInfo, userId, renderTarget) {
     `}
     ${!domainInfo.isPopular ? '' : `
       <div>
-        <span class="zecops-anti-phishing-extension-tooltip-green">
+        <span class="ssph-tooltip-green">
           ✔
         </span>
         <strong>${t(domainName)}</strong> is a well known website
@@ -91,45 +92,45 @@ function websiteInfoRender(domainInfo, userId, renderTarget) {
       <hr>
     `}
     <div>
-      <div class="zecops-anti-phishing-extension-tooltip-domain"
+      <div class="ssph-tooltip-domain"
         style="background-color: ${domainBgColor};">
         ${t(domainName)}
       </div>
-      <div class="zecops-anti-phishing-extension-tooltip-domain-emoji">
+      <div class="ssph-tooltip-domain-emoji">
         ${domainEmoji}
       </div>
     </div>
     <div>
       <strong>Times visited:</strong>
-      <span class="zecops-anti-phishing-extension-tooltip-visit-count">
+      <span class="ssph-tooltip-visit-count">
         ${domainInfo.visitCount}
         ${domainInfo.warnings.smallVisitCount ? '⚠️' : ''}
       </span>
     </div>
     <hr>
-    <div class="zecops-anti-phishing-extension-tooltip-actions">
+    <div class="ssph-tooltip-actions">
       <a title="Get help on using the extension and avoiding phishing" href="${helpUrl}" target="_blank">
-        <div class="zecops-anti-phishing-extension-tooltip-actions-icon">
+        <div class="ssph-tooltip-actions-icon">
           ${iconQuestionCircle(32)}
         </div>
         Help
       </a>
-      <a title="Report a suspicious website" href="${reportUrl}?url=${encodeURIComponent(domainInfo.url.href)}" target="_blank">
-        <div class="zecops-anti-phishing-extension-tooltip-actions-icon">
+      <a title="Report a suspicious website" href="${reportUrl}?title=${encodeURIComponent('Suspicious site report')}&body=${encodeURIComponent('Reporting: ' + domainInfo.url.href + '\n\n')}" target="_blank">
+        <div class="ssph-tooltip-actions-icon">
           ${iconFlag(32)}
         </div>
         Report
       </a>
       ${renderTarget === 'tooltip' ? `
-        <a title="Hide the phishing balloon for this session" href="#" class="zecops-anti-phishing-extension-dismiss">
-          <div class="zecops-anti-phishing-extension-tooltip-actions-icon">
+        <a title="Hide the phishing balloon for this session" href="#" class="ssph-dismiss">
+          <div class="ssph-tooltip-actions-icon">
             ${iconClose(32)}
           </div>
           Dismiss
         </a>
       ` : `
-        <a title="Show extension options" href="#" class="zecops-anti-phishing-extension-options">
-          <div class="zecops-anti-phishing-extension-tooltip-actions-icon">
+        <a title="Show extension options" href="#" class="ssph-options">
+          <div class="ssph-tooltip-actions-icon">
             ${iconCog(32)}
           </div>
           Options
@@ -147,15 +148,15 @@ function misleadingLinkInfoRender(misleadingLinkInfo) {
   const t = escapeHtml;
 
   const content = `
-    <div class="zecops-anti-phishing-extension-tooltip-heading">
+    <div class="ssph-tooltip-heading">
       ⚠️ Warning ⚠️
     </div>
-    <div class="zecops-anti-phishing-extension-tooltip-warnings">
+    <div class="ssph-tooltip-warnings">
       <div>
         The link is misleading. The text shows
-        <span class="zecops-anti-phishing-extension-tooltip-red">${t(textDomain)}</span>,
+        <span class="ssph-tooltip-red">${t(textDomain)}</span>,
         while the actual link leads to
-        <span class="zecops-anti-phishing-extension-tooltip-red">${t(linkDomain)}</span>.
+        <span class="ssph-tooltip-red">${t(linkDomain)}</span>.
       </div>
     </div>
   `;
@@ -165,9 +166,9 @@ function misleadingLinkInfoRender(misleadingLinkInfo) {
 
 function contentWrapper(content) {
   return `
-    <div class="zecops-anti-phishing-extension-tooltip">
-      <div class="zecops-anti-phishing-extension-tooltip-heading">
-        ZecOps <span style="white-space: nowrap;">Anti-Phishing</span>
+    <div class="ssph-tooltip">
+      <div class="ssph-tooltip-heading">
+        SecurityShrimp <span style="white-space: nowrap;">Anti-Phishing</span>
       </div>
       <hr>
       ${content}

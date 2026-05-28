@@ -1,6 +1,6 @@
 'use strict';
 
-/* global browser, getUserId, websiteInfoRender */
+/* global getUserId, websiteInfoRender */
 
 startPopup();
 
@@ -19,7 +19,7 @@ async function startPopup() {
 
   const popupElement = document.getElementById('popup');
   popupElement.innerHTML = content;
-  popupElement.querySelectorAll('.zecops-anti-phishing-extension-options').forEach(el => {
+  popupElement.querySelectorAll('.ssph-options').forEach(el => {
     el.addEventListener('click', event => {
       event.preventDefault();
       browser.runtime.openOptionsPage();
