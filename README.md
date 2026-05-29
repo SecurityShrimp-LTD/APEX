@@ -1,8 +1,8 @@
-# SecurityShrimp Anti-Phishing Extension
+# SecurityShrimp APEX (Anti-Phishing EXtension)
 
-A web extension that augments websites with additional visual information so the user can make an informed decision about a site's legitimacy. The extension considers the origin of the link, the sensitivity of the information about to be entered, and look-alike / Unicode domain heuristics to surface phishing risk in-context.
+A web extension that augments websites with additional visual information so the user can make an informed decision about a site's legitimacy. APEX considers the origin of the link, the sensitivity of the information about to be entered, and look-alike / Unicode domain heuristics to surface phishing risk in-context.
 
-This project is a fork of the original [ZecOps Anti-Phishing Extension](https://github.com/ZecOps/anti-phishing-extension), released under GPLv3 and unmaintained since 2022. SecurityShrimp continues the work: Manifest V3 migration, dependency refresh, and ongoing maintenance.
+This project is a fork of the original [ZecOps Anti-Phishing Extension](https://github.com/ZecOps/anti-phishing-extension), released under GPLv3 and unmaintained since 2022. SecurityShrimp APEX continues the work: Manifest V3 migration, dependency refresh, and ongoing maintenance.
 
 ## Installing the extension
 

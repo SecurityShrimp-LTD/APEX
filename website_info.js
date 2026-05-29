@@ -168,7 +168,7 @@ function contentWrapper(content) {
   return `
     <div class="ssph-tooltip">
       <div class="ssph-tooltip-heading">
-        SecurityShrimp <span style="white-space: nowrap;">Anti-Phishing</span>
+        SecurityShrimp APEX
       </div>
       <hr>
       ${content}
