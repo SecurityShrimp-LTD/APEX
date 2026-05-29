@@ -25,8 +25,8 @@ function websiteInfoRender(domainInfo, userId, renderTarget) {
 
   const t = escapeHtml;
 
-  const helpUrl = 'https://github.com/f8al/anti-phishing-extension';
-  const reportUrl = 'https://github.com/f8al/anti-phishing-extension/issues/new';
+  const helpUrl = 'https://github.com/SecurityShrimp-LTD/anti-phishing-extension';
+  const reportUrl = 'https://github.com/SecurityShrimp-LTD/anti-phishing-extension/issues/new';
 
   const content = `
     ${warningCount === 0 ? '' : `
