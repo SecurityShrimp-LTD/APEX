@@ -15,7 +15,7 @@ Published store listings will be linked here once available.
 
 ## Browser compatibility
 
-Manifest V3. Targets Chrome / Edge / Chromium and Firefox 121+ (Firefox needs the rewritten manifest produced by `npm run build`).
+Manifest V3. Targets Chrome / Edge / Chromium and Firefox 140+ (Firefox for Android 142+). Firefox needs the rewritten manifest produced by `npm run build`.
 
 On Firefox MV3, host permissions are optional at install time. Until the user grants access to `downloads.majestic.com`, the top-domains list will be empty and the look-alike / popularity checks will be skipped.
 
