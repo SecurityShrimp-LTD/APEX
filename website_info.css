@@ -68,6 +68,7 @@ div.ssph-tooltip
     .ssph-tooltip-actions > a {
     flex: 1;
     display: block;
+    cursor: pointer;
 }
 
 div.ssph-tooltip

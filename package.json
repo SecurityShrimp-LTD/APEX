@@ -1,6 +1,6 @@
 {
   "name": "securityshrimp-anti-phishing-extension",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Augment the web with indicators that help detect phishing attempts",
   "private": true,
   "type": "module",

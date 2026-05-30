@@ -23,6 +23,7 @@ async function startPopup() {
   popupElement.querySelectorAll('.ssph-options').forEach(el => {
     el.addEventListener('click', event => {
       event.preventDefault();
+      event.stopPropagation();
       browser.runtime.openOptionsPage();
     });
   });

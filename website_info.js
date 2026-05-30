@@ -122,14 +122,14 @@ function websiteInfoRender(domainInfo, userId, renderTarget) {
         Report
       </a>
       ${renderTarget === 'tooltip' ? `
-        <a title="Hide the phishing balloon for this session" href="#" class="ssph-dismiss">
+        <a title="Hide the phishing balloon for this session" role="button" class="ssph-dismiss">
           <div class="ssph-tooltip-actions-icon">
             ${iconClose(32)}
           </div>
           Dismiss
         </a>
       ` : `
-        <a title="Show extension options" href="#" class="ssph-options">
+        <a title="Show extension options" role="button" class="ssph-options">
           <div class="ssph-tooltip-actions-icon">
             ${iconCog(32)}
           </div>

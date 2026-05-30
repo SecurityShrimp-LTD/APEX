@@ -94,6 +94,7 @@ function setPhishingTooltip(target, content) {
       document.querySelectorAll('.ssph-dismiss').forEach(el => {
         el.addEventListener('click', event => {
           event.preventDefault();
+          event.stopPropagation();
           delegateInstance.destroy();
           if (initialFocusTippyInstance) {
             initialFocusTippyInstance.destroy();
