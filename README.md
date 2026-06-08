@@ -4,14 +4,20 @@ A web extension that augments websites with additional visual information so the
 
 This project is a fork of the original [ZecOps Anti-Phishing Extension](https://github.com/ZecOps/anti-phishing-extension), released under GPLv3 and unmaintained since 2022. SecurityShrimp APEX continues the work: Manifest V3 migration, dependency refresh, and ongoing maintenance.
 
-## Installing the extension
 
+# Installing the extension
+
+## Installing from Chrome/Mozilla Web Store
+
+`(Firefox|Waterfox|LibreWolf|Floorp|Zen|PaleMoon|Basilisk|SeaMonkey|IceCat)`: [Mozilla Webstore Page](https://addons.mozilla.org/en-US/firefox/addon/securityshrimp-apex/)
+
+`'(Chrome|Brave|Edge|Opera|Vivaldi|Arc)'`: [Chrome Web Store Page](https://chromewebstore.google.com/detail/securityshrimp-apex/bnadkpcdlhkaajnaelgkpdbeheiimmck)
+
+## Installing manually
 The working-tree `manifest.json` is Chrome-flavored (MV3 service worker only).
 
 * **Chrome / Edge / Chromium:** open `chrome://extensions/`, enable Developer mode, and load the cloned repo folder directly. The vendored `libraries/` directory is checked in, so no build step is required.
 * **Firefox:** run `npm install && npm run build` first, then in `about:debugging#/runtime/this-firefox` choose "Load Temporary Add-on" and point it at `dist/firefox/manifest.json`. The Firefox bundle uses `background.scripts` instead of `service_worker` because Firefox's service-worker background support is still pref-gated on most shipped versions.
-
-Published store listings will be linked here once available.
 
 ## Browser compatibility
 
